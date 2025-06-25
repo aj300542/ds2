@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>秒时钟驱动虫子运动及闪烁秒点</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 表盘：65vh 的正圆 */
+    .circle {
+      position: absolute;
+      width: 65vh;
+      height: 65vh;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+      border: 0.5vh solid rgba(0, 0, 0, 0.25);
+      top: 50%;
+      left: 50%;
+      opacity: 0.5;
+    }
+
+    /* 秒点样式：蛋黄色并闪烁 */
+    .second-dot {
+      position: absolute;
+      width: 1vh;
+      height: 1vh;
+      /*background-color: #F7E27D;(蛋黄色)*/
+      /* 蛋黄色 */
+      background: radial-gradient(circle, #F7E27D, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: blink 1s infinite;
+
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* 以下为虫子各部分样式（保持原有代码） */
+    .container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    .cryptobiote {
+      position: absolute;
+      width: 20vh;
+      height: 14vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(173, 255, 47, 0.1),
+          rgba(230, 166, 178, 0.5),
+          rgba(255, 20, 147, 0.3));
+
+      border-radius: 50% 50% 40% 40% / 50% 50% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      transform-origin: center;
+    }
+
+    .cryptobiote::before,
+    .cryptobiote::after {
+      content: "";
+      position: absolute;
+      width: 1.5vh;
+      height: 4.5vh;
+      background: linear-gradient(to bottom, #ccc, #666);
+      border-radius: 50%;
+      animation: wiggle 2s infinite ease-in-out;
+      top: 11vh;
+      opacity: 0.37;
+    }
+
+    .cryptobiote::before {
+      left: 2vh;
+    }
+
+    .cryptobiote::after {
+      right: 2vh;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(25deg);
+      }
+    }
+
+    .head {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(173, 255, 47, 0.1),
+          rgba(230, 166, 178, 0.2),
+          rgba(255, 20, 147, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      transform-origin: center;
+    }
+
+    @keyframes eyeShift {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(1vh, -4vh);
+      }
+    }
+
+    .eye {
+      width: 3.75vh;
+      height: 3.75vh;
+      background: black;
+      border-radius: 50%;
+      position: relative;
+      animation: eyeShift 22s infinite ease-in-out;
+    }
+
+    .highlight {
+      position: absolute;
+      top: 0.3vh;
+      left: 0.3vh;
+      width: 1.75vh;
+      height: 1.75vh;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .eyelid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: rgba(255, 182, 193, 0.6);
+      /* 柔和的生物粉 */
+      border-radius: 50%;
+      pointer-events: none;
+      animation: blink 5s infinite ease-in-out;
+      transform-origin: top;
+      z-index: 2;
+      /* 高于 eye 与 highlight */
+    }
+
+    @keyframes blink {
+
+      0%,
+      90%,
+      100% {
+        height: 0%;
+        opacity: 0;
+      }
+
+      92%,
+      98% {
+        height: 100%;
+        opacity: 1;
+      }
+    }
+
+
+    .mouth-char {
+      position: absolute;
+      bottom: 1.2vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2vh;
+      color: rgba(0, 0, 0, 0.3);
+      font-family: sans-serif;
+      animation: mouthPulse 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .tail {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(230, 166, 178, 0.5),
+          rgba(0, 255, 255, 0.2),
+          rgba(255, 20, 147, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.3);
+      transform-origin: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 表盘 -->
+  <div class="circle">
+    <!-- 秒点：将根据秒数定位，确保在圆周上 -->
+    <div class="second-dot"></div>
+  </div>
+
+  <!-- 虫子容器 -->
+  <div class="container">
+    <div class="tail" style="z-index: -1;"></div>
+    <div class="cryptobiote" style="z-index: 1;"></div>
+    <div class="cryptobiote" style="z-index: 2;"></div>
+    <div class="cryptobiote" style="z-index: 3;"></div>
+    <div class="cryptobiote" style="z-index: 4;"></div>
+    <div class="head" style="z-index: 5;">
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="mouth-char">人</div>
+    </div>
+  </div>
+
+  <!-- 秒针目标点更新 -->
+  <script>
+    let currentPoint = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    function updateCurrentPointBySeconds() {
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+
+      // 获取 .circle 的中心
+      const circleEl = document.querySelector('.circle');
+      const circleRect = circleEl.getBoundingClientRect();
+      const cx = circleRect.left + circleRect.width / 2;
+      const cy = circleRect.top + circleRect.height / 2;
+
+      const dialRadius = circleRect.width / 2;
+      const angle = (seconds / 60) * 2 * Math.PI - Math.PI / 2;
+      const t = now.getTime() / 1000;
+      const disturbanceAmplitude = 45;
+      const disturbanceX = disturbanceAmplitude * Math.cos(3 * t);
+      const disturbanceY = disturbanceAmplitude * Math.sin(2 * t);
+
+      currentPoint = {
+        x: cx + dialRadius * Math.cos(angle) + disturbanceX,
+        y: cy + dialRadius * Math.sin(angle) + disturbanceY
+      };
+    }
+
+    function updateTarget() {
+      updateCurrentPointBySeconds();
+      requestAnimationFrame(updateTarget);
+    }
+    updateTarget();
+  </script>
+
+  <!-- 链式追随动画 -->
+  <script>
+    const segmentPos = [];
+
+    function followTarget(el, delay = 0.06, index = 0) {
+      const circleEl = document.querySelector('.circle');
+      const circleRect = circleEl.getBoundingClientRect();
+      let pos = {
+        x: circleRect.left + circleRect.width / 2,
+        y: circleRect.top + circleRect.height / 2
+      };
+      function step() {
+        let target = currentPoint;
+        if (index > 0 && segmentPos[index - 1]) {
+          target = segmentPos[index - 1];
+        }
+        const dx = target.x - pos.x;
+        const dy = target.y - pos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const effectiveDelay = (distance > 20 ? delay * 1.5 : delay);
+        pos.x += dx * effectiveDelay;
+        pos.y += dy * effectiveDelay;
+        el.style.left = pos.x + "px";
+        el.style.top = pos.y + "px";
+        segmentPos[index] = { ...pos };
+        requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    window.onload = () => {
+      const head = document.querySelector(".head");
+      const segments = document.querySelectorAll(".cryptobiote");
+      const tail = document.querySelector(".tail");
+
+      const headScale = 0.4;
+      const bodyScale = 0.5;
+      const tailScale = 0.3;
+
+      const parts = [head, ...segments, tail];
+      const total = parts.length;
+
+      parts.forEach((part, i) => {
+        const t = i / (total - 1); // 归一化位置 (0 ~ 1)
+
+        // 插值策略：从头渐增到 bodyScale，再平滑衰减到尾部
+        let scale;
+        if (t <= 0.5) {
+          // 头部 → 躯干峰值
+          const interp = t / 0.5; // 0 → 1
+          scale = headScale + interp * (bodyScale - headScale);
+        } else {
+          // 躯干峰值 → 尾部
+          const interp = (t - 0.5) / 0.5; // 0 → 1
+          scale = bodyScale + interp * (tailScale - bodyScale);
+        }
+
+        part.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        followTarget(part, 0.05, i);
+      });
+
+      // 设置 z-index 以保持前段在上
+      segments.forEach((seg, i) => {
+        seg.style.zIndex = segments.length - i;
+      });
+    };
+
+  </script>
+
+  <!-- 秒点位置动画：确保秒点以局部坐标定位于 .circle 内 -->
+  <script>
+    const secondDot = document.querySelector('.second-dot');
+
+    function animateSecondDot() {
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+      const angle = (seconds / 60) * 2 * Math.PI - Math.PI / 2;
+
+      const circleEl = document.querySelector('.circle');
+      const rect = circleEl.getBoundingClientRect();
+      // 计算圆盘内部坐标：中心点为 (rect.width/2, rect.height/2)
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dialRadius = rect.width / 2;
+
+      // 计算在视口中的绝对位置
+      const absX = cx + dialRadius * Math.cos(angle);
+      const absY = cy + dialRadius * Math.sin(angle);
+
+      // 计算相对于 .circle 内部坐标：减去 .circle 的左上角
+      const localX = absX;  // 因为这里 rect 坐标已是 .circle 内部尺寸（.circle 内容区域通常从(0,0)开始）
+      const localY = absY;
+
+      // 如果 .second-dot 是 .circle 的直接子级，则建议直接用百分比定位：
+      // 例如：
+      // let percentX = 50 + 50 * Math.cos(angle);
+      // let percentY = 50 + 50 * Math.sin(angle);
+      // secondDot.style.left = percentX + "%";
+      // secondDot.style.top = percentY + "%";
+
+      // 这里选择使用百分比方案更简单、可靠
+      const percentX = 50 + 50 * Math.cos(angle);
+      const percentY = 50 + 50 * Math.sin(angle);
+      secondDot.style.left = percentX + "%";
+      secondDot.style.top = percentY + "%";
+
+      requestAnimationFrame(animateSecondDot);
+    }
+
+    animateSecondDot();
+  </script>
+</body>
+
+</html>

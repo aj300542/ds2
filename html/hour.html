@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>小时 Cryptobiote 无限号动画 + 时钟点闪烁</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 表盘：80vh 的正圆 */
+    .dial {
+      width: 80vh;
+      height: 80vh;
+      border: 0.5vh solid rgba(0, 0, 0, 0.25);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      opacity: 0.5;
+    }
+
+    /* 闪烁的时钟点：位于.dial的圆周上，对应当前小时数 */
+    .hour-dot {
+      position: absolute;
+      width: 5.5vh;
+      height: 5.5vh;
+      /* 这里采用径向渐变，营造蛋黄色闪烁效果 */
+      background: radial-gradient(circle, #fff4bb, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* ---------------------------
+       以下为虫子各部分样式
+       --------------------------- */
+    /* 虫子容器 */
+    .container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    /* 主体链节样式 */
+    .cryptobiote {
+      position: absolute;
+      width: 20vh;
+      height: 14vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(255, 192, 203, 0.6),
+          rgba(255, 165, 175, 0.4),
+          rgba(250, 100, 130, 0.3));
+      border-radius: 50% 50% 40% 40% / 50% 50% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      transform-origin: center;
+    }
+
+    .cryptobiote::before,
+    .cryptobiote::after {
+      content: "";
+      position: absolute;
+      width: 1.5vh;
+      height: 4.5vh;
+      background: linear-gradient(to bottom, #ccc, #666);
+      border-radius: 50%;
+      animation: wiggle 2s infinite ease-in-out;
+      top: 11vh;
+      opacity: 0.37;
+    }
+
+    .cryptobiote::before {
+      left: 2vh;
+    }
+
+    .cryptobiote::after {
+      right: 2vh;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(25deg);
+      }
+    }
+
+    /* head 样式 */
+    .head {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(255, 192, 203, 0.6),
+          rgba(255, 165, 175, 0.4),
+          rgba(250, 100, 130, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      transform-origin: center;
+    }
+
+    @keyframes eyeShift {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(1vh, -6vh);
+      }
+    }
+
+    .eye {
+      width: 2.5vh;
+      height: 2.5vh;
+      background: black;
+      border-radius: 50%;
+      position: relative;
+      animation: eyeShift 22s infinite ease-in-out;
+    }
+
+    .highlight {
+      position: absolute;
+      top: 0.3vh;
+      left: 0.3vh;
+      width: 1vh;
+      height: 1vh;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mouth-char {
+      position: absolute;
+      bottom: 1.2vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2vh;
+      color: rgba(0, 0, 0, 0.3);
+      font-family: sans-serif;
+      animation: mouthPulse 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes mouthPulse {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scaleY(1);
+        opacity: 0.9;
+      }
+
+      50% {
+        transform: translateX(-50%) scaleY(1.3);
+        opacity: 1;
+      }
+    }
+
+    /* tail 样式 */
+    .tail {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(255, 192, 203, 0.6),
+          rgba(255, 165, 175, 0.4),
+          rgba(250, 100, 130, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.3);
+      transform-origin: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 表盘 -->
+  <div class="dial">
+    <!-- 闪烁的时钟点：根据当前小时数定位在圆周上 -->
+    <div class="hour-dot"></div>
+  </div>
+  <!-- 虫子容器 -->
+  <div class="container">
+    <div class="tail" style="z-index: -1;"></div>
+    <div class="cryptobiote" style="z-index: 1;"></div>
+    <div class="cryptobiote" style="z-index: 2;"></div>
+    <div class="cryptobiote" style="z-index: 3;"></div>
+    <div class="cryptobiote" style="z-index: 4;"></div>
+    <div class="head" style="z-index: 5;">
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="mouth-char">人</div>
+    </div>
+  </div>
+
+  <!-- 更新当前目标点（小时动画，用于虫子运动），已加入扰动 -->
+  <script>
+    let currentPoint = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    function updateCurrentPointByHour() {
+      const now = new Date();
+      let hour = now.getHours() % 12;
+      if (hour === 0) hour = 12;
+
+      // 每小时对应5分刻度，例如4时对应20分
+      let minuteMark = (hour % 12) * 5;
+      const targetAngle = (minuteMark / 60) * 2 * Math.PI - Math.PI / 2;
+
+      // 获取.dial的中心、半径（80vh表盘）
+      const dialEl = document.querySelector('.dial');
+      const dialRect = dialEl.getBoundingClientRect();
+      const cx = dialRect.left + dialRect.width / 2;
+      const cy = dialRect.top + dialRect.height / 2;
+      const dialRadius = dialRect.width / 2;
+
+      // outerCenter：目标终点在表盘圆周上
+      const outerCenterX = cx + dialRadius * Math.cos(targetAngle);
+      const outerCenterY = cy + dialRadius * Math.sin(targetAngle);
+
+      // 无限号运动参数
+      const T_inf = 10; // 周期：10秒
+      const t_sec = now.getTime() / 1000;
+      const theta = 2 * Math.PI * ((t_sec % T_inf) / T_inf);
+      // 运动幅度A，例如20vh换算为像素
+      const A = window.innerHeight * 12.5 / 100;
+      const offsetX = A * Math.cos(theta);
+      const offsetY = A * Math.sin(theta) * Math.cos(theta);
+
+      // 为使无限号轨迹沿outerCenter切线方向旋转（切线方向为targetAngle+π/2）
+      const rotationAngle = targetAngle + Math.PI / 2;
+      const rotatedOffsetX = offsetX * Math.cos(rotationAngle) - offsetY * Math.sin(rotationAngle);
+      const rotatedOffsetY = offsetX * Math.sin(rotationAngle) + offsetY * Math.cos(rotationAngle);
+
+      // 加入扰动效果
+      const disturbanceAmplitude = 25;
+      const disturbanceX = disturbanceAmplitude * Math.cos(3 * t_sec);
+      const disturbanceY = disturbanceAmplitude * Math.sin(2 * t_sec);
+
+      currentPoint = {
+        x: outerCenterX + rotatedOffsetX + disturbanceX,
+        y: outerCenterY + rotatedOffsetY + disturbanceY
+      };
+    }
+
+    function animateTarget() {
+      updateCurrentPointByHour();
+      requestAnimationFrame(animateTarget);
+    }
+    animateTarget();
+  </script>
+
+  <!-- 链式追随动画 -->
+  <script>
+    const segmentPos = [];
+    function followTarget(el, delay = 0.05, index = 0) {
+      // 初始位置以.dial的中心为参考
+      const dialEl = document.querySelector('.dial');
+      const dialRect = dialEl.getBoundingClientRect();
+      let pos = {
+        x: dialRect.left + dialRect.width / 2,
+        y: dialRect.top + dialRect.height / 2
+      };
+      function step() {
+        let target = currentPoint;
+        if (index > 0 && segmentPos[index - 1]) {
+          target = segmentPos[index - 1];
+        }
+        const dx = target.x - pos.x;
+        const dy = target.y - pos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const effectiveDelay = (distance > 20 ? delay * 1.5 : delay);
+        pos.x += dx * effectiveDelay;
+        pos.y += dy * effectiveDelay;
+        el.style.left = pos.x + "px";
+        el.style.top = pos.y + "px";
+        segmentPos[index] = { ...pos };
+        requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    window.onload = () => {
+      const head = document.querySelector(".head");
+      const segments = document.querySelectorAll(".cryptobiote");
+      const tail = document.querySelector(".tail");
+
+      const headScale = 0.95;
+      const bodyScale = 0.85;
+      const tailScale = 0.65;
+
+      const parts = [head, ...segments, tail];
+      const total = parts.length;
+
+      parts.forEach((part, i) => {
+        const t = i / (total - 1); // 归一化位置 (0 ~ 1)
+
+        // 插值策略：从头渐增到 bodyScale，再平滑衰减到尾部
+        let scale;
+        if (t <= 0.5) {
+          // 头部 → 躯干峰值
+          const interp = t / 0.5; // 0 → 1
+          scale = headScale + interp * (bodyScale - headScale);
+        } else {
+          // 躯干峰值 → 尾部
+          const interp = (t - 0.5) / 0.5; // 0 → 1
+          scale = bodyScale + interp * (tailScale - bodyScale);
+        }
+
+        part.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        followTarget(part, 0.05, i);
+      });
+
+      // 设置 z-index 以保持前段在上
+      segments.forEach((seg, i) => {
+        seg.style.zIndex = segments.length - i;
+      });
+    };
+
+  </script>
+
+  <!-- 更新时钟点位置：确保.hour-dot位于.dial的圆周上，根据当前小时 -->
+  <script>
+    const hourDot = document.querySelector('.hour-dot');
+    function updateHourDot() {
+      const now = new Date();
+      let hour = now.getHours() % 12;
+      if (hour === 0) hour = 12;
+      // 计算当前小时在表盘上的角度：0小时对应正上方
+      const angle = (hour / 12) * 2 * Math.PI - Math.PI / 2;
+      // 利用百分比定位：.dial 的内部坐标系中心为50%/50%
+      const percentX = 50 + 50 * Math.cos(angle);
+      const percentY = 50 + 50 * Math.sin(angle);
+      hourDot.style.left = percentX + "%";
+      hourDot.style.top = percentY + "%";
+      requestAnimationFrame(updateHourDot);
+    }
+    updateHourDot();
+  </script>
+</body>
+
+</html>

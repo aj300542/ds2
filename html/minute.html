@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>分钟 Cryptobiote 无限号动画 + 闪烁分钟点</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 用于参考的“表盘” */
+    .dial {
+      position: absolute;
+      width: 78vh;
+      height: 78vh;
+      border-radius: 50%;
+      border: 0.5vh solid rgba(0, 0, 0, 0.25);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* 作为参考可以隐藏边框 */
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    /* 闪烁的分钟点：放置在.dial内，且位于圆周上 */
+    .minute-dot {
+      position: absolute;
+      width: 3.5vh;
+      height: 3.5vh;
+      background: radial-gradient(circle, #c6efff, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: blink 1s infinite;
+
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* ---------------------------
+       以下为虫子各部分样式
+       --------------------------- */
+    /* 虫子容器（放在上层） */
+    .container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    /* 虫体各部分样式 */
+    .cryptobiote {
+      position: absolute;
+      width: 20vh;
+      height: 14vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(248, 202, 215, 0.7),
+          rgba(230, 166, 178, 0.5),
+          rgba(168, 123, 148, 0.3));
+      border-radius: 50% 50% 40% 40% / 50% 50% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      transform-origin: center;
+    }
+
+    .cryptobiote::before,
+    .cryptobiote::after {
+      content: "";
+      position: absolute;
+      width: 1.5vh;
+      height: 4.5vh;
+      background: linear-gradient(to bottom, #ccc, #666);
+      border-radius: 50%;
+      animation: wiggle 2s infinite ease-in-out;
+      top: 11vh;
+      opacity: 0.37;
+    }
+
+    .cryptobiote::before {
+      left: 2vh;
+    }
+
+    .cryptobiote::after {
+      right: 2vh;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(25deg);
+      }
+    }
+
+    .head {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(248, 202, 215, 0.7),
+          rgba(230, 166, 178, 0.5),
+          rgba(168, 123, 148, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.5);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      transform-origin: center;
+    }
+
+    @keyframes eyeShift {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(1vh, -5vh);
+      }
+    }
+
+    .eye {
+      width: 2.5vh;
+      height: 2.5vh;
+      background: black;
+      border-radius: 50%;
+      position: relative;
+      animation: eyeShift 22s infinite ease-in-out;
+    }
+
+    .highlight {
+      position: absolute;
+      top: 0.3vh;
+      left: 0.3vh;
+      width: 1vh;
+      height: 1vh;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mouth-char {
+      position: absolute;
+      bottom: 1.2vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2vh;
+      color: rgba(0, 0, 0, 0.3);
+      font-family: sans-serif;
+      animation: mouthPulse 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .tail {
+      position: absolute;
+      width: 18vh;
+      height: 13vh;
+      background: radial-gradient(circle at 40% 60%,
+          rgba(248, 202, 215, 0.7),
+          rgba(230, 166, 178, 0.5),
+          rgba(168, 123, 148, 0.3));
+      border-radius: 50% 50% 45% 45% / 55% 55% 60% 60%;
+      box-shadow: inset 0 0 2vh rgba(255, 255, 255, 0.3);
+      transform-origin: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 表盘：用于参考中心 -->
+  <div class="dial">
+    <!-- 闪烁的分钟点，位于表盘圆周上 -->
+    <div class="minute-dot"></div>
+  </div>
+
+  <!-- 虫子容器 -->
+  <div class="container">
+    <div class="tail" style="z-index: -1;"></div>
+    <div class="cryptobiote" style="z-index: 1;"></div>
+    <div class="cryptobiote" style="z-index: 2;"></div>
+    <div class="cryptobiote" style="z-index: 3;"></div>
+    <div class="cryptobiote" style="z-index: 4;"></div>
+    <div class="head" style="z-index: 5;">
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="eye">
+        <div class="highlight"></div>
+      </div>
+      <div class="mouth-char">人</div>
+    </div>
+  </div>
+
+  <!-- 目标点更新：基于当前分钟 -->
+  <script>
+    // 全局目标点（虫子追随该目标）
+    let currentPoint = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    /*
+       根据当前分钟更新目标点：
+       - 利用当前秒数产生振荡系数 f，使虫子在目标点附近来回运动
+       - 以当前分钟决定目标角度（0分钟在正上方）
+       - 有效半径 R = dial直径/2 - 10（预留空间）
+       - 最后加上扰动效果
+    */
+    function updateCurrentPointByMinute() {
+      const now = new Date();
+      const s = now.getSeconds() + now.getMilliseconds() / 1000;  // 当前秒 [0,60)
+      const T = 8; // 10秒完成一次往返运动
+      const f = (1 - Math.cos(2 * Math.PI * s / T)) / 2;  // f在0～1之间循环
+
+      const minuteInt = now.getMinutes();
+      // 计算目标角度：0分钟在正上方
+      const targetAngle = (minuteInt / 60) * 2 * Math.PI - Math.PI / 2;
+
+      // 获取.dial的中心和直径
+      const dialEl = document.querySelector('.dial');
+      const dialRect = dialEl.getBoundingClientRect();
+      const cx = dialRect.left + dialRect.width / 2;
+      const cy = dialRect.top + dialRect.height / 2;
+      const dialDiameter = dialRect.width;
+
+      const R = dialDiameter / 2 - 10; // 有效半径
+      const targetX = cx + f * R * Math.cos(targetAngle);
+      const targetY = cy + f * R * Math.sin(targetAngle);
+
+      // 添加扰动效果
+      const t = now.getTime() / 1000;
+      const disturbanceAmplitude = 25;
+      const disturbanceX = disturbanceAmplitude * Math.cos(3 * t);
+      const disturbanceY = disturbanceAmplitude * Math.sin(2 * t);
+
+      currentPoint = {
+        x: targetX + disturbanceX,
+        y: targetY + disturbanceY
+      };
+    }
+
+    function animateTarget() {
+      updateCurrentPointByMinute();
+      requestAnimationFrame(animateTarget);
+    }
+    animateTarget();
+  </script>
+
+  <!-- 链式追随动画 -->
+  <script>
+    const segmentPos = [];
+
+    function followTarget(el, delay = 0.03, index = 0) {
+      // 初始位置以.dial的中心为参考
+      const dialEl = document.querySelector('.dial');
+      const dialRect = dialEl.getBoundingClientRect();
+      let pos = {
+        x: dialRect.left + dialRect.width / 2,
+        y: dialRect.top + dialRect.height / 2
+      };
+      function step() {
+        let target = currentPoint;
+        if (index > 0 && segmentPos[index - 1]) {
+          target = segmentPos[index - 1];
+        }
+        const dx = target.x - pos.x;
+        const dy = target.y - pos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const effectiveDelay = (distance > 20 ? delay * 1.5 : delay);
+        pos.x += dx * effectiveDelay;
+        pos.y += dy * effectiveDelay;
+        el.style.left = pos.x + "px";
+        el.style.top = pos.y + "px";
+        segmentPos[index] = { ...pos };
+        requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    window.onload = () => {
+      const head = document.querySelector(".head");
+      const segments = document.querySelectorAll(".cryptobiote");
+      const tail = document.querySelector(".tail");
+
+      const parts = [head, ...segments, tail];
+      const total = parts.length;
+      const minScale = 0.55;
+      const maxScale = 0.85;
+
+      parts.forEach((part, i) => {
+        const dist = Math.abs((i / (total - 1)) - 0.5) * 2;
+        const factor = 1 - dist;
+        const scale = minScale + factor * (maxScale - minScale);
+        // 使用 translate(-50%, -50%) 确保left/top表示元素中心，再叠加scale
+        part.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        followTarget(part, 0.06, i);
+      });
+
+      segments.forEach((seg, i) => {
+        seg.style.zIndex = segments.length - i;
+      });
+    };
+  </script>
+
+  <!-- 分钟点位置更新：确保.minute-dot位于.dial的圆周上，对应当前分钟 -->
+  <script>
+    const minuteDot = document.querySelector('.minute-dot');
+    function animateMinuteDot() {
+      const now = new Date();
+      // 使用连续的分钟数（分钟 + 秒/60）以实现平滑变换
+      const minuteVal = now.getMinutes() + now.getSeconds() / 60;
+      const angle = (minuteVal / 60) * 2 * Math.PI - Math.PI / 2;
+      // 利用百分比定位，.dial内部坐标：
+      const percentX = 50 + 50 * Math.cos(angle);
+      const percentY = 50 + 50 * Math.sin(angle);
+      minuteDot.style.left = percentX + "%";
+      minuteDot.style.top = percentY + "%";
+      requestAnimationFrame(animateMinuteDot);
+    }
+    animateMinuteDot();
+  </script>
+</body>
+
+</html>
