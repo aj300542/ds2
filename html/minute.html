@@ -174,9 +174,24 @@
       font-size: 2vh;
       color: rgba(0, 0, 0, 0.3);
       font-family: sans-serif;
-      animation: mouthPulse 5s ease-in-out infinite;
-      pointer-events: none;
+      animation: mouthmove 6s infinite ease-in-out;
+      transform-origin: center bottom;
+      /* 缩放围绕底部张合 */
     }
+
+    @keyframes mouthmove {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scaleY(0.5);
+      }
+
+      50% {
+        transform: translateX(-50%) scaleY(1.5);
+        /* 可根据需要调整张嘴程度 */
+      }
+    }
+
 
     .tail {
       position: absolute;
