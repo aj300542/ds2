@@ -12,6 +12,18 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            animation: shrink-page 1800s linear forwards;
+            transform-origin: center center;
+        }
+
+        @keyframes shrink-page {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(0.3);
+            }
         }
 
         .person {
