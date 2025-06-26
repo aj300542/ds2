@@ -11,7 +11,7 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: #000;
+      background-color: #000000;
     }
 
     body {
@@ -23,19 +23,25 @@
     .background-layer {
       position: absolute;
       inset: 0;
-      z-index: 0;
       background-image: url('img/ds2.jpg');
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
       animation: fluctuate 12s ease-in-out infinite;
       filter: blur(2vh) brightness(80%);
+      opacity: 0.85;
+      z-index: 1;
+      backdrop-filter: blur(3vh);
+
     }
 
     @keyframes fluctuate {
-      0%, 100% {
+
+      0%,
+      100% {
         filter: blur(2vh) brightness(80%);
       }
+
       50% {
         filter: blur(0) brightness(100%);
       }
@@ -45,7 +51,7 @@
       position: absolute;
       width: 100vw;
       height: 100vh;
-      z-index: 2;
+
       pointer-events: none;
     }
 
@@ -99,6 +105,22 @@
     .ui-buttons button:hover {
       background-color: rgba(0, 0, 0, 0.8);
     }
+
+    .sam-frame {
+      position: absolute;
+      top: 65%;
+      /* 距离容器顶部 20% 视口高度 */
+      left: 50%;
+      /* 距离容器左侧 10% 视口高度 */
+      width: 30vh;
+      /* 以视口高度设定宽度 */
+      height: 30vh;
+      /* 高度也使用 vh 单位 */
+      transform: scale(1);
+      transform: translate(-50%);
+      border: none;
+      z-index: 1;
+    }
   </style>
 </head>
 
@@ -109,6 +131,7 @@
     <iframe src="html/second.html" title="秒钟动画" style="z-index: 1;"></iframe>
     <iframe src="html/minute.html" title="分钟动画" style="z-index: 2;"></iframe>
     <iframe src="html/hour.html" title="小时动画" style="z-index: 3;"></iframe>
+    <iframe src="sam.html" title="sam" class="sam-frame"></iframe>
   </div>
 
   <div class="overlay"></div>
