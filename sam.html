@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>矩形人形图（描边版）</title>
+    <style>
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .person {
+            position: relative;
+            width: 20vh;
+            margin: 10vh auto;
+            height: 50vh;
+        }
+
+        .rect {
+            position: absolute;
+            background: transparent;
+            border: 1vh solid #4682B4;
+            box-sizing: border-box;
+            filter: blur(1vh);
+
+
+        }
+
+        .head {
+            width: 6vh;
+            height: 6vh;
+            top: 0;
+            left: 7vh;
+        }
+
+        .body1 {
+            width: 9vh;
+            height: 6vh;
+            top: 6vh;
+            left: 5.5vh;
+        }
+
+        .body2 {
+            width: 8.4vh;
+            height: 6vh;
+            top: 12vh;
+            left: 5.8vh;
+        }
+
+
+        .arm-left-1 {
+            width: 2vh;
+            height: 4vh;
+            top: 6vh;
+            left: 3vh;
+        }
+
+        .arm-left-2 {
+            width: 2vh;
+            height: 4vh;
+            top: 10vh;
+            left: 3vh;
+        }
+
+        .arm-right-1 {
+            width: 2vh;
+            height: 4vh;
+            top: 6vh;
+            left: 15vh;
+        }
+
+        .arm-right-2 {
+            width: 2vh;
+            height: 4vh;
+            top: 10vh;
+            left: 15vh;
+        }
+
+        .leg-left-1 {
+            width: 3vh;
+            height: 5vh;
+            top: 18vh;
+            left: 6vh;
+        }
+
+        .leg-left-2 {
+            width: 3vh;
+            height: 5vh;
+            top: 23vh;
+            left: 6vh;
+        }
+
+        .leg-right-1 {
+            width: 3vh;
+            height: 5vh;
+            top: 18vh;
+            left: 11vh;
+        }
+
+        .leg-right-2 {
+            width: 3vh;
+            height: 5vh;
+            top: 23vh;
+            left: 11vh;
+        }
+
+        /* 缩放动画 */
+        .arm-left-1,
+        .arm-left-2 {
+            animation: arm-swing-l 1s infinite alternate ease-in-out;
+        }
+
+        .arm-right-1,
+        .arm-right-2 {
+            animation: arm-swing-r 1s infinite alternate ease-in-out;
+        }
+
+        .leg-left-1,
+        .leg-left-2 {
+            animation: leg-step-l 1s infinite alternate ease-in-out;
+        }
+
+        .leg-right-1,
+        .leg-right-2 {
+            animation: leg-step-r 1s infinite alternate ease-in-out;
+        }
+
+        @keyframes arm-swing-l {
+            0% {
+                transform: scaleY(0.8);
+            }
+
+            100% {
+                transform: scaleY(1.4);
+            }
+        }
+
+        @keyframes arm-swing-r {
+            0% {
+                transform: scaleY(1.4);
+            }
+
+            100% {
+                transform: scaleY(0.8);
+            }
+        }
+
+        @keyframes leg-step-l {
+            0% {
+                transform: scaleY(0.8);
+            }
+
+            100% {
+                transform: scaleY(1.4);
+            }
+        }
+
+        @keyframes leg-step-r {
+            0% {
+                transform: scaleY(1.4);
+            }
+
+            100% {
+                transform: scaleY(0.8);
+            }
+        }
+
+        .body1,
+        .body2 {
+            transform-origin: center center;
+            animation: torso-rotate 1s infinite alternate ease-in-out;
+        }
+
+        @keyframes torso-rotate {
+            0% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .body2 {
+            position: relative;
+            /* 其余样式保持不变 */
+            overflow: visible;
+            /* 防止子元素被裁剪 */
+
+        }
+
+        .box {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            width: 10vh;
+            border: 1.5vh solid #FF8C00;
+            background: transparent;
+            box-sizing: border-box;
+
+
+        }
+
+        /* 设置五个不同高度与位置 */
+        .box1 {
+            height: 3vh;
+            top: 1.4vh;
+        }
+
+        .box2 {
+            height: 3.6vh;
+            top: -2.5vh;
+        }
+
+        .box3 {
+            height: 2vh;
+            top: -7vh;
+        }
+
+        .box4 {
+            height: 4.4vh;
+            top: -11.5vh;
+        }
+
+        .box5 {
+            height: 3.4vh;
+            top: -16.5vh;
+        }
+
+        .box6 {
+            height: 2.4vh;
+            top: -19.5vh;
+        }
+
+
+        .box-arm {
+            position: absolute;
+            width: 2.5vh;
+            height: 5vh;
+            background: transparent;
+            border: 1.5vh solid #FF8C00;
+            box-sizing: border-box;
+
+        }
+
+        /* 相对于 .body2 内部重新布局 */
+        .box-arm-left {
+            top: -6vh;
+            left: -6vh;
+        }
+
+        .box-arm-right {
+            top: -6vh;
+            right: -6vh;
+        }
+
+        .box-leg {
+            position: absolute;
+            width: 1vh;
+            height: 5vh;
+            background: transparent;
+            border: 1vh solid #FF8C00;
+            box-sizing: border-box;
+
+        }
+
+        .box-leg-left {
+            top: 5vh;
+            left: -2.5vh;
+        }
+
+        .box-leg-right {
+            top: 5vh;
+            right: -2.5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="person">
+        <div class="rect head"></div>
+        <div class="rect body1"></div>
+        <div class="rect body2">
+            <div class="box-arm box-arm-left"></div>
+            <div class="box-arm box-arm-right"></div>
+            <div class="box box1"></div>
+            <div class="box box2"></div>
+            <div class="box box3"></div>
+            <div class="box box4"></div>
+            <div class="box box5"></div>
+            <div class="box box6"></div>
+            <div class="box-leg box-leg-left"></div>
+            <div class="box-leg box-leg-right"></div>
+        </div>
+        <div class="rect arm-left-1"></div>
+        <div class="rect arm-left-2"></div>
+        <div class="rect arm-right-1"></div>
+        <div class="rect arm-right-2"></div>
+        <div class="rect leg-left-1"></div>
+        <div class="rect leg-left-2"></div>
+        <div class="rect leg-right-1"></div>
+        <div class="rect leg-right-2"></div>
+
+
+    </div>
+</body>
+
+</html>
