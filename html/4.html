@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>虫族路径运动（带轨迹）</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="scale-wrapper">
+        <svg viewBox="0 0 400 600">
+            <path id="motionPath"
+                d="M390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219 Z" />
+        </svg>
+
+
+        <canvas id="trackCanvas" style="position:absolute; top:0; left:0; z-index:0;"></canvas>
+
+        <div id="wormContainer" class="container"></div>
+
+        <script src="script.js"></script>
+    </div>
+</body>
+
+</html>
+
+</html>
