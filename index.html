@@ -12,6 +12,7 @@
       height: 100%;
       overflow: hidden;
       background-color: #000000;
+      
     }
 
     body {
@@ -87,7 +88,7 @@
       display: flex;
       justify-content: space-between;
       padding: 0 2vw;
-      z-index: 9999;
+      z-index: 9;
       pointer-events: auto;
     }
 
@@ -121,6 +122,20 @@
       border: none;
       z-index: 1;
     }
+    .number-frame {
+      position: absolute;
+      top: 65%;
+      /* 距离容器顶部 20% 视口高度 */
+      left: 50%;
+      /* 距离容器左侧 10% 视口高度 */
+      width: 30vh;
+      /* 以视口高度设定宽度 */
+      height: 30vh;
+      /* 高度也使用 vh 单位 */
+      transform: scale(1);
+      transform: translate(-50%);
+      border: none;
+    }
   </style>
 </head>
 
@@ -128,10 +143,11 @@
   <div class="background-layer"></div>
 
   <div class="iframe-container">
-    <iframe src="html/second.html" title="秒钟动画" style="z-index: 1;"></iframe>
-    <iframe src="html/minute.html" title="分钟动画" style="z-index: 2;"></iframe>
-    <iframe src="html/hour.html" title="小时动画" style="z-index: 3;"></iframe>
+    <iframe src="html/second.html" title="秒钟动画" style="z-index: 3;"></iframe>
+    <iframe src="html/minute.html" title="分钟动画" style="z-index: 4;"></iframe>
+    <iframe src="html/hour.html" title="小时动画" style="z-index: 5;"></iframe>
     <iframe src="sam.html" title="sam" class="sam-frame"></iframe>
+    <iframe src="number.html" title="number" class="snumber-frame" style="z-index: 1;"></iframe>
   </div>
 
   <div class="overlay"></div>

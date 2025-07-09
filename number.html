@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>33</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script/wakelock.js"></script>
+    <link rel="shortcut icon" href="eskier.ico">
+
+    <style>
+        #content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            margin: 0 auto;
+            padding: 0%;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+    </style>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        html {
+            background: transparent;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .iframe-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            transform: scale(1, 1);
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            margin: 0px;
+            overflow: hidden;
+            transition: opacity 6s;
+        }
+
+        .iframe-container iframe:nth-child(1) {
+            animation: move 45s infinite;
+        }
+
+        .iframe-container iframe:nth-child(2) {
+            animation: move 42.5s infinite;
+        }
+
+        .iframe-container iframe:nth-child(4) {
+            animation: move 38s infinite;
+        }
+
+        .iframe-container iframe:nth-child(5) {
+            animation: move 43.5s infinite !important;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-8vh) translateX(-5vh);
+            }
+
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        iframe {
+            border: none !important;
+            outline: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+
+        }
+
+        iframe:nth-child(2) {
+            margin-right: 0vw;
+            /* 设置小时和分钟之间的间距 */
+        }
+
+        .spacer {
+            flex-grow: 100;
+            /* 让它占据可用空间 */
+            width: 250vw;
+            /* 可以调整大小 */
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+    <div id="content">
+
+        <div class="iframe-container">
+            <iframe id="sz-hours-tens" src="html/0.html"></iframe>
+            <iframe id="sz-hours-ones" src="html/0.html"></iframe>
+            <div class="spacer"></div>
+            <iframe id="sz-minutes-tens" src="html/0.html"></iframe>
+            <iframe id="sz-minutes-ones" src="html/0.html"></iframe>
+        </div>
+        <div class="imgeskier" onclick="toggleImage()">
+            <div class="img"></div>
+            <div class="img2"></div>
+        </div>
+        <div class="imgundam" onclick="toggleImage()"></div>
+    </div>
+
+
+    <script>
+        setInterval(function () {
+            var date = new Date();
+            var seconds = date.getSeconds();
+            var opacity = 1;
+
+            if (seconds >= 54 && seconds <= 60) {
+                opacity = 0.05;
+            }
+
+            var iframes = document.querySelectorAll('.iframe-container iframe');
+            for (var i = 0; i < iframes.length; i++) {
+                iframes[i].style.opacity = opacity;
+            }
+        }, 1000);
+    </script>
+    <script>
+        function szDisplayNumber(id, number) {
+            if (id.startsWith('hours') || id.startsWith('minutes')) {
+                document.getElementById('sz-' + id).src = 'html/' + number + '.html';
+            } else {
+                document.getElementById('sz-' + id).innerText = number;
+            }
+        }
+        function szDisplayTimeHoursAndMinutes() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            szDisplayNumber('hours-tens', Math.floor(hours / 10));
+            szDisplayNumber('hours-ones', hours % 10);
+            szDisplayNumber('minutes-tens', Math.floor(minutes / 10));
+            szDisplayNumber('minutes-ones', minutes % 10);
+
+            // 计算到下一分钟开始的时间差
+            const seconds = now.getSeconds();
+            const millisecondsToNextMinute = (60 - seconds) * 1000;
+            setTimeout(szDisplayTimeHoursAndMinutes, millisecondsToNextMinute);
+        }
+
+        function szDisplayTimeSeconds() {
+            const now = new Date();
+            let seconds = now.getSeconds();
+
+            szDisplayNumber('seconds-tens', Math.floor(seconds / 10));
+            szDisplayNumber('seconds-ones', seconds % 10);
+
+            const milliseconds = now.getMilliseconds();
+            setTimeout(szDisplayTimeSeconds, 1000 - milliseconds);
+        }
+        window.onload = function () {
+            szDisplayTimeHoursAndMinutes();
+            szDisplayTimeSeconds();
+        };
+
+    </script>
+
+</body>
+
+</html>
