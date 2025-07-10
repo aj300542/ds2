@@ -15,18 +15,18 @@ window.onload = () => {
     const worms = [];
 
     const wormConfigs = [
-        { speed: 0.0002, start: 0.05, phase: 0, amplitude: 20, headScale: 0.14, bodyScale: 0.28, tailScale: 0.105, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(255,20,147,0.15))" },
-        { speed: 0.00028, start: 0.125, phase: Math.PI / 2, amplitude: 35, headScale: 0.21, bodyScale: 0.28, tailScale: 0.14, color: "radial-gradient(circle at 40% 60%, rgba(0,255,255,0.2), rgba(255,182,193,0.25))" },
-        { speed: 0.00032, start: 0.2, phase: Math.PI, amplitude: 25, headScale: 0.14, bodyScale: 0.35, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(255,255,0,0.2), rgba(255,105,180,0.15))" },
-        { speed: 0.00026, start: 0.275, phase: Math.PI / 3, amplitude: 20, headScale: 0.14, bodyScale: 0.28, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(0,255,255,0.2))" },
-        { speed: 0.00035, start: 0.35, phase: Math.PI * 1.5, amplitude: 35, headScale: 0.175, bodyScale: 0.385, tailScale: 0.245, color: "radial-gradient(circle at 40% 60%, rgba(255,20,147,0.1), rgba(0,255,255,0.2))" },
-        { speed: 0.00025, start: 0.425, phase: Math.PI / 6, amplitude: 18, headScale: 0.28, bodyScale: 0.385, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(220,245,200,0.15), rgba(255,105,180,0.3))" },
-        { speed: 0.0003, start: 0.5, phase: Math.PI * 1.2, amplitude: 28, headScale: 0.245, bodyScale: 0.35, tailScale: 0.175, color: "radial-gradient(circle at 40% 60%, rgba(255,105,180,0.3), rgba(210,240,240,0.2))" },
-        { speed: 0.00022, start: 0.575, phase: Math.PI / 4, amplitude: 22, headScale: 0.07, bodyScale: 0.21, tailScale: 0.14, color: "radial-gradient(circle at 40% 60%, rgba(235,255,255,0.15), rgba(200,255,200,0.15))" },
-        { speed: 0.00038, start: 0.65, phase: Math.PI * 0.75, amplitude: 20, headScale: 0.315, bodyScale: 0.21, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(255,255,255,0.1), rgba(0,255,255,0.2))" },
-        { speed: 0.00021, start: 0.725, phase: Math.PI / 8, amplitude: 16, headScale: 0.224, bodyScale: 0.336, tailScale: 0.154, color: "radial-gradient(circle at 40% 60%, rgba(235,235,255,0.22), rgba(180,230,255,0.15))" },
-        { speed: 0.0004, start: 0.8, phase: Math.PI / 1.7, amplitude: 17, headScale: 0.266, bodyScale: 0.35, tailScale: 0.196, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(200,255,230,0.15))" },
-        { speed: 0.0005, start: 0.875, phase: Math.PI * 1.8, amplitude: 12, headScale: 0.182, bodyScale: 0.364, tailScale: 0.168, color: "radial-gradient(circle at 40% 60%, rgba(245,255,245,0.12), rgba(255,105,180,0.3))" }
+        { speed: 0.0004, start: 0.05, phase: 0, amplitude: 20, headScale: 0.28, bodyScale: 0.56, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(255,20,147,0.15))" },
+        { speed: 0.00056, start: 0.125, phase: Math.PI / 2, amplitude: 35, headScale: 0.42, bodyScale: 0.56, tailScale: 0.28, color: "radial-gradient(circle at 40% 60%, rgba(0,255,255,0.2), rgba(255,182,193,0.25))" },
+        { speed: 0.00064, start: 0.2, phase: Math.PI, amplitude: 25, headScale: 0.28, bodyScale: 0.7, tailScale: 0.42, color: "radial-gradient(circle at 40% 60%, rgba(255,255,0,0.2), rgba(255,105,180,0.15))" },
+        { speed: 0.00052, start: 0.275, phase: Math.PI / 3, amplitude: 20, headScale: 0.28, bodyScale: 0.56, tailScale: 0.42, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(0,255,255,0.2))" },
+        { speed: 0.0007, start: 0.35, phase: Math.PI * 1.5, amplitude: 35, headScale: 0.35, bodyScale: 0.77, tailScale: 0.49, color: "radial-gradient(circle at 40% 60%, rgba(255,20,147,0.1), rgba(0,255,255,0.2))" },
+        { speed: 0.0005, start: 0.425, phase: Math.PI / 6, amplitude: 18, headScale: 0.56, bodyScale: 0.77, tailScale: 0.42, color: "radial-gradient(circle at 40% 60%, rgba(220,245,200,0.15), rgba(255,105,180,0.3))" },
+        { speed: 0.0006, start: 0.5, phase: Math.PI * 1.2, amplitude: 28, headScale: 0.49, bodyScale: 0.7, tailScale: 0.35, color: "radial-gradient(circle at 40% 60%, rgba(255,105,180,0.3), rgba(210,240,240,0.2))" },
+        { speed: 0.00044, start: 0.575, phase: Math.PI / 4, amplitude: 22, headScale: 0.14, bodyScale: 0.42, tailScale: 0.28, color: "radial-gradient(circle at 40% 60%, rgba(235,255,255,0.15), rgba(200,255,200,0.15))" },
+        { speed: 0.00076, start: 0.65, phase: Math.PI * 0.75, amplitude: 20, headScale: 0.63, bodyScale: 0.42, tailScale: 0.42, color: "radial-gradient(circle at 40% 60%, rgba(255,255,255,0.1), rgba(0,255,255,0.2))" },
+        { speed: 0.00042, start: 0.725, phase: Math.PI / 8, amplitude: 16, headScale: 0.448, bodyScale: 0.672, tailScale: 0.308, color: "radial-gradient(circle at 40% 60%, rgba(235,235,255,0.22), rgba(180,230,255,0.15))" },
+        { speed: 0.0008, start: 0.8, phase: Math.PI / 1.7, amplitude: 17, headScale: 0.532, bodyScale: 0.7, tailScale: 0.392, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(200,255,230,0.15))" },
+        { speed: 0.001, start: 0.875, phase: Math.PI * 1.8, amplitude: 12, headScale: 0.364, bodyScale: 0.728, tailScale: 0.336, color: "radial-gradient(circle at 40% 60%, rgba(245,255,245,0.12), rgba(255,105,180,0.3))" }
     ];
 
     function createWorm(cfg, index) {
