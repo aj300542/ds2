@@ -13,7 +13,7 @@ window.onload = () => {
 
     const wormContainer = document.getElementById("wormContainer");
     const worms = [];
-
+    const scaleFactor = 0.64;
     const wormConfigs = [
         { speed: 0.0004, start: 0.05, phase: 0, amplitude: 20, headScale: 0.28, bodyScale: 0.56, tailScale: 0.21, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(255,20,147,0.15))" },
         { speed: 0.00056, start: 0.125, phase: Math.PI / 2, amplitude: 35, headScale: 0.42, bodyScale: 0.56, tailScale: 0.28, color: "radial-gradient(circle at 40% 60%, rgba(0,255,255,0.2), rgba(255,182,193,0.25))" },
@@ -27,7 +27,12 @@ window.onload = () => {
         { speed: 0.00042, start: 0.725, phase: Math.PI / 8, amplitude: 16, headScale: 0.448, bodyScale: 0.672, tailScale: 0.308, color: "radial-gradient(circle at 40% 60%, rgba(235,235,255,0.22), rgba(180,230,255,0.15))" },
         { speed: 0.0008, start: 0.8, phase: Math.PI / 1.7, amplitude: 17, headScale: 0.532, bodyScale: 0.7, tailScale: 0.392, color: "radial-gradient(circle at 40% 60%, rgba(173,255,47,0.2), rgba(200,255,230,0.15))" },
         { speed: 0.001, start: 0.875, phase: Math.PI * 1.8, amplitude: 12, headScale: 0.364, bodyScale: 0.728, tailScale: 0.336, color: "radial-gradient(circle at 40% 60%, rgba(245,255,245,0.12), rgba(255,105,180,0.3))" }
-    ];
+    ].map(config => ({
+        ...config,
+        headScale: config.headScale * scaleFactor,
+        bodyScale: config.bodyScale * scaleFactor,
+        tailScale: config.tailScale * scaleFactor
+    }));
 
     function createWorm(cfg, index) {
         const tail = document.createElement("div");
